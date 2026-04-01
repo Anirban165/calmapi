@@ -1,67 +1,157 @@
-# Calm API
-### Production ready Modular REST API generator using NodeJS & MongoDB
+# CalmAPI
+
+### Production-ready modular REST API generator using Node.js and MongoDB
+
 ![Calm API](https://repository-images.githubusercontent.com/352502404/d0e11c00-dce4-11eb-80de-9959e403a244)
 
 [![npm version](https://badge.fury.io/js/calmapi.svg)](https://badge.fury.io/js/calmapi)
-![David](https://img.shields.io/david/sunilksamanta/calmapi)
 [![DeepScan grade](https://deepscan.io/api/teams/12352/projects/18169/branches/439384/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=12352&pid=18169&bid=439384)
 
-### INSTALLATION
-Install by running 
-```shell
+Scaffold a fully working backend with auth, CRUD, file uploads, logging, and security defaults in under a minute. CalmAPI gives you code you own and can extend without hidden framework magic.
+
+## Why CalmAPI?
+
+- Controller, Service, Model architecture with DTO support
+- JWT auth with refresh tokens and password reset via OTP
+- Built-in User, Auth, Media, and sample Post modules
+- CRUD with pagination, filtering, sorting, search, and date range queries
+- File uploads with AWS S3 and MinIO support, including presigned uploads
+- Structured error handling, rate limiting, Helmet, CORS, and input sanitization
+- Docker-ready setup with health checks, graceful shutdown, and structured logging
+- CLI module generator with automatic route discovery
+
+## Quick Start
+
+```bash
+# Install globally
 npm i -g calmapi
-```
-Then run inside your workspace directory 
-```shell
+
+# Create a new project
 calmapi
-```
-And follow the easy steps.
 
-### MODULE GENERATION
-Generate CalmAPI CRUD Module just by running the following inside project's root.
-```shell
+# Run it
+cd my-project
+npm start
+```
+
+Default server: `http://localhost:5001`
+
+Included out of the box:
+
+- Auth endpoints for register, login, logout, refresh token, password reset, and profile
+- Post CRUD endpoints with pagination and query support
+- Media upload endpoints for direct and presigned uploads
+- Health check endpoint at `GET /health`
+
+## Generate Modules
+
+```bash
 calmapi generate module product
 ```
 
-Valid Module generation commands.
+Generated module structure:
 
-```shell
-calmapi generate module product
+```text
+src/modules/product/
+  product.controller.js
+  product.service.js
+  product.model.js
+  product.route.js
+  product.dto.js
+  product.settings.js
 ```
-```shell
+
+Routes are auto-discovered, so the new CRUD endpoints work immediately:
+
+```text
+GET    /api/products
+GET    /api/products/:id
+POST   /api/products
+PUT    /api/products/:id
+DELETE /api/products/:id
+```
+
+Valid naming examples:
+
+```bash
+calmapi generate module product
 calmapi generate module products
-```
-```shell
 calmapi generate module productMeta
-```
-```shell
 calmapi generate module ProductMeta
-```
-```shell
 calmapi generate module product-meta
+calmapi generate module test-series --force
 ```
 
-### FEATURES
-* Production ready - Controller, Model & Service oriented architecture
-* Modules with automated Routing (Nested Route support)
-* Built-in Authentication Module with JWT & DB Store authentication
-* Built-in User Module
-* Built-in Media Module for file upload [AWS S3 Support]
-* Build-in CRUD operations for modules with pagination, filters, sorters
-* Sample Post Module (CRUD Operation Example)
-* **CRUD Module generation command line support.**
-* No Hidden sh*ts in your node_modules. Completely free to customize
-* Prebuilt CRUD operation classes for Controller & Service
-* DTO Support( Data transfer Object)
-* Eslint rules enabled
-* .env support
-* And many more
+## Built-In Features
 
-### Contributors
-* [Sunil Kr. Samanta](https://github.com/sunilksamanta)
-* [Rajdip Mondal](https://github.com/RajdipM)
+- Production-ready project structure with `src/` for app code and `system/` for framework internals
+- Base CRUD service and controller classes for fast module development
+- Searchable and filterable list endpoints with safe field control
+- Ownership checks, ID validation, and consistent API error responses
+- Pino logging with readable development output
+- `.env` support and configurable app settings
+- Presigned upload flow, graceful shutdown, health checks, and security middleware included
 
-*We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's: Reporting a bug, Documentation, Discussing the current state of the code, Submitting a fix or Proposing new features.*
+## Project Structure
 
-### Credits
-[Thiago Pacheco](https://github.com/pachecoio) for the idea of better NodeJS architechture.
+```text
+my-project/
+├── index.js
+├── .env
+├── package.json
+├── Dockerfile
+├── docker-compose.yml
+├── src/
+│   ├── config.js
+│   ├── utils/
+│   ├── plugins/
+│   └── modules/
+│       ├── auth/
+│       ├── user/
+│       ├── post/
+│       └── media/
+└── system/
+  ├── core/
+  ├── middleware.js
+  ├── server.js
+  ├── database.js
+  └── routes/
+```
+
+Your app code lives in `src/`. The `system/` folder contains the reusable framework core, including the CRUD base classes, routing layer, middleware stack, cache, and response/error utilities.
+
+Example query patterns:
+
+```text
+GET /api/posts?skip=0&limit=10
+GET /api/posts?search=node&sortBy[createdAt]=-1
+GET /api/posts?title=Hello&from=2025-01-01&to=2025-12-31
+```
+
+## Docker
+
+```bash
+docker compose up
+```
+
+For production:
+
+```bash
+docker build -t my-api .
+docker run -p 5001:5001 --env-file .env my-api
+```
+
+## Contributors
+
+- [Sunil Kr. Samanta](https://github.com/sunilksamanta)
+- [Rajdip Mondal](https://github.com/RajdipM)
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Credits
+
+[Thiago Pacheco](https://github.com/pachecoio) for the architectural inspiration.
+
+## License
+
+[MIT](LICENSE)
